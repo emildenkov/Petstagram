@@ -1,6 +1,8 @@
 from django.core.exceptions import ValidationError
+from django.utils.deconstruct import deconstructible
 
 
+@deconstructible
 class ImageSizeValidator:
 
     def __init__(self, image_size, message=None):

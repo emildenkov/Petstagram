@@ -1,6 +1,5 @@
 from django.core.validators import MinLengthValidator
 from django.db import models
-
 from petstagram.pets.models import Pet
 from petstagram.photos.validators import ImageSizeValidator
 
@@ -25,7 +24,6 @@ class Photo(models.Model):
     tagged_pets = models.ManyToManyField(
         to=Pet,
         blank=True,
-        null=True,
     )
     date_of_publication = models.DateField(
         auto_now=True
