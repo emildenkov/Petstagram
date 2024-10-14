@@ -3,7 +3,7 @@ from django import forms
 from petstagram.pets.models import Pet
 
 
-class PetForm(forms.ModelForm):
+class PetBaseForm(forms.ModelForm):
     class Meta:
         model = Pet
         fields = ['name', 'date_of_birth', 'personal_photo']
@@ -19,11 +19,15 @@ class PetForm(forms.ModelForm):
         }
 
 
-class PetEditForm(PetForm):
+class PetAddForm(PetBaseForm):
     pass
 
 
-class PetDeleteForm(PetForm):
+class PetEditForm(PetBaseForm):
+    pass
+
+
+class PetDeleteForm(PetBaseForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
