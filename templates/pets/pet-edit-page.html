@@ -1,11 +1,17 @@
 {% extends 'common/base.html' %}
+{% load static %}
 {% block content %}
-
-<!-- Start Footer Section -->
-<div class="footer">
-		<span class="footer-section">
-			© 2024 SOFTUNI WORKSHOP FOR PYTHON WEB MODULE
-		</span>
-</div>
-
+    
+    <div class="edit-delete edit-photo">
+        <h2>Edit Pet</h2>
+    
+        <form method="post" action="">
+            {% csrf_token %}
+            {{ form.as_p }}
+            
+            <button class="edit-btn" type="submit">Edit</button>
+        </form>
+    
+    </div>
+    
 {% endblock %}
