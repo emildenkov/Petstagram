@@ -30,13 +30,13 @@
                 <div class="edit-delete-btns">
     
                     <!-- Link to Edit Pet Photo Page -->
-                    <a href="{% url 'photo-edit' photo.pk %}">
+                    <a href="{% url 'edit-photo' photo.pk %}">
                         <img class="edit-img" src="{% static '/images/edit-pen-icon-6.jpg' %}"
                              alt="edit button">
                     </a>
     
                     <!-- Link to Delete Pet Photo Page -->
-                    <a href="{% url 'photo-delete' photo.pk %}">
+                    <a href="{% url 'details-photo' photo.pk %}">
                         <img class="bin-img" src="{% static '/images/icon-remove-22.jpg' %}"
                              alt="bin button">
                     </a>
@@ -79,7 +79,7 @@
 
         {% for pet in photo.tagged_pets.all %}
             <!-- Link to First Tagged Pet Details Page-->
-            <a href="{% url 'pet-details' "username" pet.slug %}">
+            <a href="{% url 'details-pet' "username" pet.slug %}">
                 <p class="message">
                     <b>{{ pet.name }}</b>
                 </p>
@@ -90,7 +90,7 @@
         <!-- Photo description -->
         <p class="pet-details">{{ photo.description }}</p>
         {% else %}
-            <a href="{% url 'photo-details' photo.pk %}">
+            <a href="{% url 'details-photo' photo.pk %}">
                 <h4 class="details">See details</h4>
             </a>
         {% endif %}

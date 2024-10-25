@@ -1,59 +1,38 @@
 from django.shortcuts import render, redirect
+from django.urls import reverse_lazy
+from django.views.generic import CreateView, DetailView, UpdateView
 
 from petstagram.common.forms import CommentForm
 from petstagram.photos.forms import PhotoCreateForm, PhotoEditForm
 from petstagram.photos.models import Photo
 
 
-def add_photo(request):
-    form = PhotoCreateForm(request.POST or None, request.FILES or None)
-
-    if request.method == 'POST':
-        if form.is_valid():
-            form.save()
-            return redirect('home')
-
-    context = {
-        'form': form
-    }
-
-    return render(request, 'photos/photo-add-page.html', context)
+class AddPhotoView(CreateView):
+    model = Photo
+    form_class = PhotoCreateForm
+    template_name = 'photos/photo-add-page.html'
+    success_url = reverse_lazy('home')
 
 
-def details_photo(request, pk: int):
-    photo = Photo.objects.get(pk=pk)
-    likes = photo.like_set.all()
-    comments = photo.comment_set.all()
+class PhotoDetailView(DetailView):
+    model = Photo
+    template_name = 'photos/photo-details-page.html'
 
-    comment_form = CommentForm()
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
 
-    context = {
-        'photo': photo,
-        'likes': likes,
-        'comments': comments,
-        'comment_form': comment_form
-    }
+        context['likes'] = self.object.like_set.count()
+        context['comments'] = self.object.comment_set.count()
+        context['comment_form'] = CommentForm()
 
 
-    return render(request, 'photos/photo-details-page.html', context)
+class EditPhotoView(UpdateView):
+    model = Photo
+    form_class = PhotoEditForm
+    template_name = 'photos/photo-edit-page.html'
 
-
-def edit_photo(request, pk: int):
-    photo = Photo.objects.get(pk=pk)
-    form = PhotoEditForm(request.POST or None, instance=photo)
-
-    if request.method == 'POST':
-        if form.is_valid():
-            form.save()
-            return redirect('details_photo', pk=pk)
-
-    context = {
-        'form': form,
-        'photo': photo
-    }
-
-
-    return render(request, 'photos/photo-edit-page.html', context)
+    def get_success_url(self):
+        return reverse_lazy('details-photo', kwargs={'pk': self.object.pk})
 
 
 def delete_photo(request, pk: int):
